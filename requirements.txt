@@ -1,2 +1,4 @@
 requests
 Django
+Pillow
+Faker
