@@ -8,5 +8,6 @@ urlpatterns = [
     path('', views.root, name='root'),
     path('dynamic-route/<str:name>/', views.dynamic_route, name='dynamic_route'),
     path('product/<int:id>/', views.product_detail, name='product_detail'),
-    path('student-form/', views.student_form, name='student_form')
+    path('student-form/', views.student_form, name='student_form'),
+    path('search-page/', views.search_page, name='search_page'),
 ]

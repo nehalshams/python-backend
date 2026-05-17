@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+
+from home.models import Student
 from .forms import StudentForm
 # Create your views here.
 
@@ -45,3 +47,14 @@ def student_form(request):
     else:
         context['form'] = StudentForm()
     return render(request, 'student_form.html', context)
+
+
+
+def search_page(request):
+    query = request.GET.get('search', '')
+    context = { 
+        'students': Student.objects.filter(name__icontains=query),
+        'query': query
+    }
+
+    return render(request, 'search_page.html', context)

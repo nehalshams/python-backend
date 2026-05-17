@@ -8,6 +8,10 @@ gender_choices = [
     ('Other', 'Other')
 ]
 
+
+class College(models.Model):
+    college_name = models.CharField(max_length=100)
+    college_address = models.CharField(max_length=200)
 class Student(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
@@ -18,6 +22,8 @@ class Student(models.Model):
     file = models.FileField(upload_to='files/')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    college = models.ForeignKey(College, on_delete=models.CASCADE, related_name='students', null=True, blank=True)
 
 
 class Author(models.Model):
