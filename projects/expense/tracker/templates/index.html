@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Expense Tracker</h1>
+    <div class="container">
+      <div class="header">
+        <img
+          src="https://i.ibb.co/jfScDTC/budget.png"
+          alt="Expense Tracker"
+        />
+        <div class="balance-container">
+          <h2>Your Balance</h2>
+          <h2 id="balance" class="balance">${{ total_balance|floatformat:2 }}</h2>
+        </div>
+      </div>
+      <div class="inc-exp-container">
+        <div>
+          <h4>Income</h4>
+          <p id="money-plus" class="money plus">+{{ income|floatformat:2 }}</p>
+        </div>
+        <div>
+          <h4>Expenses</h4>
+          <p id="money-minus" class="money minus">-${{ expenses|floatformat:2 }}</p>
+        </div>
+      </div>
+      <h3>History</h3>
+      <ul id="list" class="list">
+        {% for transaction in transactions %}
+          <li id="transaction-{{ transaction.id }}" class="{% if transaction.amount > 0 %}plus{% else %}minus{% endif %}">
+            {{ transaction.description }} <span>{{ transaction.amount }}</span>
+            <button class="delete-btn" onclick="removeTransaction('{{ transaction.id }}')">
+              <i class="fa fa-times"></i>
+            </button>
+          </li>
+        {% endfor %}
+      </ul>
+      <h3>Add new transaction</h3>
+      <form id="form" method="post">
+        {% csrf_token %}
+        <div class="form-control">
+          <label for="text">Description</label>
+          <input type="text" id="text" name="description" placeholder="Enter description..." />
+        </div>
+        <div class="form-control">
+          <label for="amount"
+            >Amount <br />
+            <small>(-100 = expense, 100 = income)</small></label
+          >
+          <input type="number" name="amount" id="amount" placeholder="Enter amount..." />
+        </div>
+        <button class="btn" type="submit">Add transaction</button>
+      </form>
+    </div>
+    <!-- Notification -->
+    <div class="notification-container" id="notification">
+      <p>Please add a description and amount</p>
+    </div>
+
+<script>
+    function removeTransaction(id){
+        fetch(`/delete-transaction/${id}/`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Remove the transaction from the DOM
+            document.getElementById(`transaction-${id}`).remove();
+        });
+    }
+</script>
+{% endblock %}
