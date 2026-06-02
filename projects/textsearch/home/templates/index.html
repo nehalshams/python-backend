@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Search App</h1>
+<form method="post">
+    {% csrf_token %}
+    <input type="text" value="{% if search %}{{search}}{% endif%}" name="search" placeholder="Enter your search query...">
+    <button type="submit">Search</button>
+</form>
+
+<table class="table">
+    <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Description</th>
+        <th scope="col">Category</th>
+        <th scope="col">Price</th>
+        <th scope="col">Brand</th>
+        <th scope="col">SKU</th>
+        <th scope="col">Thumbnail</th>
+    </tr>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.title }}</td>
+            <td>{{ product.description }}</td>
+            <td>{{ product.category }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.brand }}</td>
+            <td>{{ product.sku }}</td>
+            <td><img src="{{ product.thumbnail }}" alt="{{ product.title }}" width="100"></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
