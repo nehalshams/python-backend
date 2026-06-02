@@ -2,3 +2,5 @@ requests
 Django
 Pillow
 Faker
+
+beautifulsoup4
